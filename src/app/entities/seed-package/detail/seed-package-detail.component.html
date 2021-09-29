@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-xs-offset-1 col-xs-10">
+    <div class="box-row">
+      <h1>Seedpackage</h1>
+      <a routerLink="/entities/seedpackages">To list</a>
+      <div *ngIf="item" class="pm-detail-form-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Id</mat-label>
+          <input matInput disabled [(ngModel)]="item.id">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Expiration date</mat-label>
+          <input matInput [matDatepicker]="expirationDateDatepicker" [(ngModel)]="item.expirationDate" required>
+          <mat-datepicker-toggle matSuffix [for]="expirationDateDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #expirationDateDatepicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput [(ngModel)]="item.description">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Plant species</mat-label>
+          <mat-select [(ngModel)]="item.plantSpecies" [compareWith]="compareById">
+            <mat-option *ngFor="let species of allPlantSpecies" [value]="species">{{species.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-checkbox class="example-margin" [(ngModel)]="hasBuyEvent" (change)="onBuyChangeEvent($event)">Purchased</mat-checkbox>
+        <div *ngIf="item.buyEvent">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Buy date</mat-label>
+            <input matInput [matDatepicker]="buyDateDatepicker" [(ngModel)]="item.buyEvent.date" required>
+            <mat-datepicker-toggle matSuffix [for]="buyDateDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #buyDateDatepicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Store</mat-label>
+            <input matInput [(ngModel)]="item.buyEvent.store">
+          </mat-form-field>
+          <mat-form-field appearance="fill" floatLabel="always">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" [(ngModel)]="item.buyEvent.price" placeholder="0">
+            <span matPrefix>€&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput [(ngModel)]="item.buyEvent.description">
+          </mat-form-field>
+        </div>
+
+        <button mat-button class="btn btn-primary" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
