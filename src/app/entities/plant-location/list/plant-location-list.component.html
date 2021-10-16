@@ -1,0 +1,69 @@
+<div class="row">
+  <div class="col-xs-offset-1 col-xs-10">
+    <div class="box-row">
+      <h1>Locations</h1>
+      <button mat-raised-button color="primary" routerLink="/entities/plantlocations/new">Add</button>
+
+      <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Filter table" #input>
+      </mat-form-field>
+
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort aria-label="table with plantlocations">
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="pm-action-cell" scope="col"> Actions</th>
+            <td mat-cell *matCellDef="let item" class="pm-action-cell">
+              <button mat-icon-button routerLink="/entities/plantlocations/{{item.id}}" aria-label="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="delete(item)" aria-label="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <!-- Color column -->
+          <ng-container matColumnDef="color">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Color</th>
+            <td mat-cell *matCellDef="let item"><div class="colorbox" [ngStyle]="{'background-color':'#' + item.color}"></div></td>
+          </ng-container>
+          <!-- Name column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Name</th>
+            <td mat-cell *matCellDef="let item">{{item.name}}</td>
+          </ng-container>
+          <!-- Description column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Description</th>
+            <td mat-cell *matCellDef="let item"> {{item.description}} </td>
+          </ng-container>
+          <!-- Parent column -->
+          <ng-container matColumnDef="parent">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Parent</th>
+            <td mat-cell *matCellDef="let item"><a
+              routerLink="/entities/plantlocations/{{item.parentId}}">{{getItemById(item.parentId)?.name}}</a></td>
+          </ng-container>
+          <!-- Maximum height column -->
+          <ng-container matColumnDef="maximumHeight">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Maximum height</th>
+            <td mat-cell *matCellDef="let item"> {{item.maximumHeight}} </td>
+          </ng-container>
+          <!-- spacing column -->
+          <ng-container matColumnDef="spacing">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Spacing</th>
+            <td mat-cell *matCellDef="let item"> {{item.spacing}} </td>
+          </ng-container>
+          <!-- sungrade column -->
+          <ng-container matColumnDef="sungrade">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col"> Sungrade</th>
+            <td mat-cell *matCellDef="let item"> {{item.sungrade}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

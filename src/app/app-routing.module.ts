@@ -8,6 +8,8 @@ import {PlantsListComponent} from "./entities/plants/list/plants-list.component"
 import {PlantsDetailComponent} from "./entities/plants/detail/plants-detail.component";
 import {ProducePickEventListComponent} from "./entities/produce-pick-event/list/produce-pick-event-list.component";
 import {ProducePickEventDetailComponent} from "./entities/produce-pick-event/detail/produce-pick-event-detail.component";
+import {PlantLocationListComponent} from "./entities/plant-location/list/plant-location-list.component";
+import {PlantLocationDetailComponent} from "./entities/plant-location/detail/plant-location-detail.component";
 
 const routes: Routes = [
   {path: 'entities/plantspecies', component: PlantSpeciesListComponent},
@@ -18,6 +20,8 @@ const routes: Routes = [
   {path: 'entities/seedpackages/:id', component: SeedPackageDetailComponent},
   {path: 'entities/plants', component: PlantsListComponent},
   {path: 'entities/plants/:id', component: PlantsDetailComponent},
+  {path: 'entities/plantlocations', component: PlantLocationListComponent},
+  {path: 'entities/plantlocations/:id', component: PlantLocationDetailComponent},
 ];
 
 @NgModule({

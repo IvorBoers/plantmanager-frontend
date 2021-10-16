@@ -17,7 +17,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {PlantSpeciesDetailComponent} from "./entities/plantspecies/detail/plantspecies-detail.component";
 import {PlantSpeciesListComponent} from "./entities/plantspecies/list/plantspecies-list.component";
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatSortModule} from "@angular/material/sort";
 import {MatSelectModule} from "@angular/material/select";
@@ -32,6 +32,9 @@ import {PlantsDetailComponent} from "./entities/plants/detail/plants-detail.comp
 import {PlantsListComponent} from "./entities/plants/list/plants-list.component";
 import { ProducePickEventDetailComponent } from './entities/produce-pick-event/detail/produce-pick-event-detail.component';
 import { ProducePickEventListComponent } from './entities/produce-pick-event/list/produce-pick-event-list.component';
+import {PlantLocationDetailComponent} from "./entities/plant-location/detail/plant-location-detail.component";
+import {PlantLocationListComponent} from "./entities/plant-location/list/plant-location-list.component";
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
 export const MY_FORMATS = {
   parse: {
@@ -49,6 +52,8 @@ export const MY_FORMATS = {
   declarations: [
     AppComponent,
     HeaderComponent,
+    PlantLocationListComponent,
+    PlantLocationDetailComponent,
     PlantSpeciesListComponent,
     PlantSpeciesDetailComponent,
     SeedPackageDetailComponent,
@@ -59,6 +64,7 @@ export const MY_FORMATS = {
     ProducePickEventListComponent
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -80,11 +86,13 @@ export const MY_FORMATS = {
     MatMomentDateModule,
     MatDatepickerModule,
     MatCheckboxModule,
+    NgxMatColorPickerModule
   ],
   providers: [
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
   ],
   bootstrap: [AppComponent]
 })

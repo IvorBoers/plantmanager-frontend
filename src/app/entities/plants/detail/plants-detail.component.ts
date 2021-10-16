@@ -14,6 +14,8 @@ import {PlantSpeciesService} from "../../plantspecies/plant-species-service";
 import {PlantSpecies} from "../../../domain/plant-species";
 import {PlantDiedEvent} from "../../../domain/plant-died-event";
 import {DomSanitizer} from "@angular/platform-browser";
+import {PlantLocationService} from "../../plant-location/plant-location-service";
+import {PlantLocation} from "../../../domain/plant-location";
 
 @Component({
   selector: 'app-plants-detail',
@@ -23,11 +25,15 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class PlantsDetailComponent extends AbstractDetailComponent<Plant>{
   allSeedPackages: SeedPackage[] = [];
   allPlantSpecies: PlantSpecies[] = [];
+  allPlantLocations: PlantLocation[] = [];
   hasBuyEvent = false;
   hasSeedStartEvent = false;
   hasPlantDiedEvent = false;
 
-  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantService, protected seedPackageService: SeedPackageService, protected plantSpeciesService: PlantSpeciesService, sanitizer: DomSanitizer) {
+  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantService, sanitizer: DomSanitizer,
+              protected plantLocationService: PlantLocationService,
+              protected seedPackageService: SeedPackageService,
+              protected plantSpeciesService: PlantSpeciesService) {
     super(router, route, _snackBar, service, sanitizer)
   }
 
@@ -35,6 +41,7 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant>{
     super.ngOnInit();
     this.seedPackageService.getAll().subscribe(result => this.allSeedPackages = result);
     this.plantSpeciesService.getAll().subscribe(result => this.allPlantSpecies = result);
+    this.plantLocationService.getAll().subscribe(result => this.allPlantLocations = result);
   }
 
   getEntityName(): string {

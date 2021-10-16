@@ -16,6 +16,13 @@
               <mat-option *ngFor="let species of allPlantSpecies" [value]="species">{{species.name}}</mat-option>
             </mat-select>
           </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Plant location</mat-label>
+            <mat-select [(ngModel)]="item.location" [compareWith]="compareById">
+              <mat-option *ngFor="let location of allPlantLocations" [value]="location">{{location.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <div class="box">
