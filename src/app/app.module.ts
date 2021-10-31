@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeaderComponent } from './header/header.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HeaderComponent} from './header/header.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
@@ -30,11 +30,13 @@ import {SeedPackageListComponent} from "./entities/seed-package/list/seed-packag
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {PlantsDetailComponent} from "./entities/plants/detail/plants-detail.component";
 import {PlantsListComponent} from "./entities/plants/list/plants-list.component";
-import { ProducePickEventDetailComponent } from './entities/produce-pick-event/detail/produce-pick-event-detail.component';
-import { ProducePickEventListComponent } from './entities/produce-pick-event/list/produce-pick-event-list.component';
+import {ProducePickEventDetailComponent} from './entities/produce-pick-event/detail/produce-pick-event-detail.component';
+import {ProducePickEventListComponent} from './entities/produce-pick-event/list/produce-pick-event-list.component';
 import {PlantLocationDetailComponent} from "./entities/plant-location/detail/plant-location-detail.component";
 import {PlantLocationListComponent} from "./entities/plant-location/list/plant-location-list.component";
-import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import {MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS, NgxMatColorPickerModule} from '@angular-material-components/color-picker';
+import {PlantSpeciesTypeDetailComponent} from "./entities/plantspecies-type/detail/plantspecies-type-detail.component";
+import {PlantSpeciesTypeListComponent} from "./entities/plantspecies-type/list/plantspecies-type-list.component";
 
 export const MY_FORMATS = {
   parse: {
@@ -56,6 +58,8 @@ export const MY_FORMATS = {
     PlantLocationDetailComponent,
     PlantSpeciesListComponent,
     PlantSpeciesDetailComponent,
+    PlantSpeciesTypeListComponent,
+    PlantSpeciesTypeDetailComponent,
     SeedPackageDetailComponent,
     SeedPackageListComponent,
     PlantsDetailComponent,

@@ -13,6 +13,13 @@
           <input matInput [(ngModel)]="item.name">
         </mat-form-field>
         <mat-form-field appearance="fill">
+          <mat-label>Type</mat-label>
+          <mat-select [(ngModel)]="item.type">
+            <mat-option [value]="null">None</mat-option>
+            <mat-option *ngFor="let type of allTypes" [value]="type">{{type.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
           <mat-label>Description</mat-label>
           <textarea matInput [(ngModel)]="item.description"></textarea>
         </mat-form-field>

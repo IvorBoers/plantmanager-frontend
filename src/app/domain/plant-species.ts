@@ -1,4 +1,5 @@
 import {Entity} from "./entity";
+import {PlantSpeciesType} from "./plant-species-type";
 
 export class PlantSpecies implements Entity {
   id!: number
@@ -9,6 +10,7 @@ export class PlantSpecies implements Entity {
   spacing!: number
   sungrade!: number
   image!: string
+  type?: PlantSpeciesType
 
 
 }

@@ -10,10 +10,14 @@ import {ProducePickEventListComponent} from "./entities/produce-pick-event/list/
 import {ProducePickEventDetailComponent} from "./entities/produce-pick-event/detail/produce-pick-event-detail.component";
 import {PlantLocationListComponent} from "./entities/plant-location/list/plant-location-list.component";
 import {PlantLocationDetailComponent} from "./entities/plant-location/detail/plant-location-detail.component";
+import {PlantSpeciesTypeListComponent} from "./entities/plantspecies-type/list/plantspecies-type-list.component";
+import {PlantSpeciesTypeDetailComponent} from "./entities/plantspecies-type/detail/plantspecies-type-detail.component";
 
 const routes: Routes = [
   {path: 'entities/plantspecies', component: PlantSpeciesListComponent},
   {path: 'entities/plantspecies/:id', component: PlantSpeciesDetailComponent},
+  {path: 'entities/plantspeciestypes', component: PlantSpeciesTypeListComponent},
+  {path: 'entities/plantspeciestypes/:id', component: PlantSpeciesTypeDetailComponent},
   {path: 'entities/producepickevents', component: ProducePickEventListComponent},
   {path: 'entities/producepickevents/:id', component: ProducePickEventDetailComponent},
   {path: 'entities/seedpackages', component: SeedPackageListComponent},

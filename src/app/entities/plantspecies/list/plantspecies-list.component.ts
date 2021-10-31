@@ -12,7 +12,7 @@ export class PlantSpeciesListComponent extends AbstractEntityTableComponent<Plan
 
   constructor(plantSpeciesService: PlantSpeciesService) {
     super(plantSpeciesService)
-    this.setDisplayedColumns(['name', 'description', 'parent', 'maximumHeight', 'spacing', 'sungrade'])
+    this.setDisplayedColumns(['name', 'type', 'parent', 'description', 'maximumHeight', 'spacing', 'sungrade'])
   }
 
 }
