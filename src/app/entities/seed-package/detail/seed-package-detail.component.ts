@@ -59,4 +59,8 @@ export class SeedPackageDetailComponent extends AbstractDetailComponent<SeedPack
       this.item.buyEvent = undefined;
     }
   }
+
+  formatSliderLabel(value: number) {
+    return Math.round(value) + '%';
+  }
 }

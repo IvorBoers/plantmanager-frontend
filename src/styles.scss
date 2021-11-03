@@ -20,3 +20,11 @@ table {
     display: block;
   }
 }
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.link {
+  cursor: pointer;
+}

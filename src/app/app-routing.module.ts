@@ -12,8 +12,10 @@ import {PlantLocationListComponent} from "./entities/plant-location/list/plant-l
 import {PlantLocationDetailComponent} from "./entities/plant-location/detail/plant-location-detail.component";
 import {PlantSpeciesTypeListComponent} from "./entities/plantspecies-type/list/plantspecies-type-list.component";
 import {PlantSpeciesTypeDetailComponent} from "./entities/plantspecies-type/detail/plantspecies-type-detail.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
+  {path: '', component: HomeComponent},
   {path: 'entities/plantspecies', component: PlantSpeciesListComponent},
   {path: 'entities/plantspecies/:id', component: PlantSpeciesDetailComponent},
   {path: 'entities/plantspeciestypes', component: PlantSpeciesTypeListComponent},

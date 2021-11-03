@@ -1,5 +1,6 @@
 <mat-toolbar color="primary">
-  <button mat-button [matMenuTriggerFor]="masterdata">Masterdata</button>
+
+  <button mat-icon-button [matMenuTriggerFor]="masterdata"><mat-icon>menu</mat-icon></button>
   <mat-menu #masterdata="matMenu">
     <button mat-menu-item routerLink="/entities/plantspeciestypes">Plantspecies types</button>
     <button mat-menu-item routerLink="/entities/plantspecies">Plantspecies</button>
@@ -8,4 +9,5 @@
     <button mat-menu-item routerLink="/entities/plants">Plants</button>
     <button mat-menu-item routerLink="/entities/producepickevents">Produce</button>
   </mat-menu>
+  <button mat-button routerLink="/">Plantmanager</button>
 </mat-toolbar>

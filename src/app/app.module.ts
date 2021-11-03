@@ -37,6 +37,12 @@ import {PlantLocationListComponent} from "./entities/plant-location/list/plant-l
 import {MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS, NgxMatColorPickerModule} from '@angular-material-components/color-picker';
 import {PlantSpeciesTypeDetailComponent} from "./entities/plantspecies-type/detail/plantspecies-type-detail.component";
 import {PlantSpeciesTypeListComponent} from "./entities/plantspecies-type/list/plantspecies-type-list.component";
+import { HomeComponent } from './home/home.component';
+import { SeedPackageBlockComponent } from './seed-package-block/seed-package-block.component';
+import { PlantBlockComponent } from './plant-block/plant-block.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatSliderModule} from "@angular/material/slider";
 
 export const MY_FORMATS = {
   parse: {
@@ -65,7 +71,10 @@ export const MY_FORMATS = {
     PlantsDetailComponent,
     PlantsListComponent,
     ProducePickEventDetailComponent,
-    ProducePickEventListComponent
+    ProducePickEventListComponent,
+    HomeComponent,
+    SeedPackageBlockComponent,
+    PlantBlockComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -75,9 +84,12 @@ export const MY_FORMATS = {
     HttpClientModule,
     MatToolbarModule,
     MatButtonModule,
+    MatCardModule,
     MatListModule,
     MatIconModule,
     MatFormFieldModule,
+    MatProgressBarModule,
+    MatSliderModule,
     MatSnackBarModule,
     MatTableModule,
     MatPaginatorModule,

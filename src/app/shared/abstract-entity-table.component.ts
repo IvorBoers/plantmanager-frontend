@@ -20,10 +20,11 @@ export abstract class AbstractEntityTableComponent<T extends Entity> implements 
   }
 
   setDisplayedColumns(displayedEntityColumns: string[]) {
-    this.displayedColumns = ['actions'];
+    this.displayedColumns = [];
     displayedEntityColumns.forEach(it => {
       this.displayedColumns.push(it)
     });
+    this.displayedColumns.push('actions')
   }
 
   ngOnInit() {
