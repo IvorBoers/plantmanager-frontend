@@ -1,8 +1,12 @@
 <div class="row">
   <div class="col-xs-offset-1 col-xs-10">
     <div class="box-row">
-      <h1>Location</h1>
-      <a routerLink="/entities/plantlocations">To list</a>
+      <mat-toolbar>
+        <h1>Location</h1>
+        <span class="toolbar-spacer"></span>
+        <button mat-icon-button class="btn" routerLink="/entities/plantlocations"><mat-icon>arrow_back</mat-icon></button>
+        <button mat-icon-button class="btn btn-primary" (click)="save()"><mat-icon>save</mat-icon></button>
+      </mat-toolbar>
       <div *ngIf="item" class="pm-detail-form-container">
         <mat-form-field appearance="fill">
           <mat-label>Id</mat-label>
@@ -35,7 +39,6 @@
           </button>
         </span>
 
-        <button mat-button class="btn btn-primary" (click)="save()">Save</button>
       </div>
     </div>
   </div>
