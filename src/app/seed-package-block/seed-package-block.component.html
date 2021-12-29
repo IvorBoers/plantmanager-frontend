@@ -1,16 +1,22 @@
 <mat-card>
   <mat-toolbar>
-    <span>Seedpackages</span>
+    <h1>Seedpackages</h1>
     <span class="toolbar-spacer"></span>
     <button mat-icon-button routerLink="/entities/seedpackages/new">
       <mat-icon>post_add</mat-icon>
     </button>
   </mat-toolbar>
-  <mat-list>
-    <mat-list-item *ngFor="let item of items" routerLink="/entities/seedpackages/{{item.id}}" class="link">
-      <mat-icon mat-list-icon>article</mat-icon>
-      <div mat-line>{{item.description}}</div>
-      <div mat-line> {{item.plantSpecies.name}} <mat-progress-bar mode="determinate" value="{{item.percentFull}}"></mat-progress-bar></div>
-    </mat-list-item>
-  </mat-list>
+  <div *ngIf="isDataPresent">
+    <mat-list *ngFor="let entry of getItemsByTypeMap() | keyvalue">
+      <h2 matSubheader>{{entry.key.name}}</h2>
+      <mat-list-item *ngFor="let item of entry.value" routerLink="/entities/seedpackages/{{item.id}}" class="link">
+        <mat-icon mat-list-icon>article</mat-icon>
+        <div mat-line>{{item.description}}</div>
+        <div mat-line> {{item.plantSpecies.name}}
+          <mat-progress-bar mode="determinate" value="{{item.percentFull}}"></mat-progress-bar>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
 </mat-card>
