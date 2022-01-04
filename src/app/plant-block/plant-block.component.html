@@ -6,11 +6,11 @@
       <mat-icon>post_add</mat-icon>
     </button>
   </mat-toolbar>
-  <mat-list>
-    <mat-list-item *ngFor="let item of items" routerLink="/entities/plants/{{item.id}}" class="link">
+  <mat-nav-list>
+    <mat-list-item *ngFor="let item of items" routerLink="/entities/plants/{{item.id}}">
       <mat-icon mat-list-icon>yard</mat-icon>
       <div mat-line>{{item.plantSpecies.name}}</div>
       <div mat-line> {{item.location.name}} </div>
     </mat-list-item>
-  </mat-list>
+  </mat-nav-list>
 </mat-card>

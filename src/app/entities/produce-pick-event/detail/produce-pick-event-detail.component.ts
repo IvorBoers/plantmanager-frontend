@@ -22,12 +22,28 @@ export class ProducePickEventDetailComponent extends AbstractDetailComponent<Pro
   }
 
   ngOnInit() {
-    super.ngOnInit();
-    this.plantService.getAll().subscribe(all => this.allPlants = all);
+    this.plantService.getAll().subscribe(all => {
+      this.allPlants = all;
+      super.ngOnInit();
+    });
+
   }
 
   createNewItem(): ProducePickEvent {
-    return new ProducePickEvent();
+    console.log("create new produce")
+    let newItem = new ProducePickEvent();
+    newItem.date = new Date();
+    const plantId = this.route.snapshot.paramMap.get('plant')
+    console.log("param plant " + plantId);
+      if (plantId) {
+        console.log("plantId=" + plantId + ", looking for it in " + this.allPlants.length + " plants")
+        let plant = this.allPlants.find(it => it.id == Number(plantId));
+        if (plant) {
+          newItem.plant = plant;
+        }
+      }
+
+    return newItem;
   }
 
   getEntityName(): string {

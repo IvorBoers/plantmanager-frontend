@@ -1,14 +1,20 @@
-<div class="row">
-  <div class="col-xs-offset-1 col-xs-10">
-    <div class="box-row">
-      <mat-toolbar>
+<div class="row justify-content-md-center">
+  <div class="col-lg-8">
+    <div class="row">
+      <mat-toolbar class="col-12">
         <h1>Plant specy</h1>
         <span class="toolbar-spacer"></span>
-        <button mat-icon-button class="btn" routerLink="/entities/plantspecies"><mat-icon>arrow_back</mat-icon></button>
-        <button mat-icon-button class="btn btn-primary" (click)="save()"><mat-icon>save</mat-icon></button>
+        <button mat-icon-button class="btn" routerLink="/entities/plantspecies">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button mat-icon-button class="btn btn-primary" (click)="save()">
+          <mat-icon>save</mat-icon>
+        </button>
       </mat-toolbar>
+    </div>
 
-      <div *ngIf="item" class="pm-detail-form-container">
+    <div *ngIf="item" class="pm-detail-form-container row">
+      <div class="col-lg-8 g-0">
         <mat-form-field appearance="fill">
           <mat-label>Id</mat-label>
           <input matInput disabled [(ngModel)]="item.id">
@@ -35,18 +41,21 @@
             <mat-option *ngFor="let parent of all" [value]="parent.id">{{parent.name}}</mat-option>
           </mat-select>
         </mat-form-field>
+      </div>
+      <div class="col-lg-4 g-0">
+        <img *ngIf="item.image" [src]="getImageSrc(item.image)" alt="species picture" class="img-fluid">
 
-        <img *ngIf="item.image" [src]="getImageSrc(item.image)" alt="species picture"/>
-
-        <span *ngIf="!isCreate">
-          <mat-label class="btn btn-default">
+        <div class="row" *ngIf="!isCreate">
+          <mat-label>Image</mat-label>
+          <mat-label class="btn btn-default col-8">
             <input type="file" (change)="selectFile('image', $event)">
           </mat-label>
-
-          <button mat-raised-button color="primary" [disabled]="!selectedFiles" (click)="upload('image')">
-            <mat-icon>file_upload</mat-icon><span>upload</span>
-          </button>
-        </span>
+          <div class="col-4">
+            <button mat-raised-button color="primary" [disabled]="!selectedFiles" (click)="upload('image')">
+              <mat-icon>file_upload</mat-icon><span>upload</span>
+            </button>
+          </div>
+        </div>
 
       </div>
     </div>

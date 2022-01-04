@@ -13,7 +13,7 @@ export abstract class AbstractDetailComponent<T extends Entity> implements OnIni
 
   selectedFiles = new Map(); // maps fieldName to FileList;
 
-  protected constructor(private router: Router, private route: ActivatedRoute, private _snackBar: MatSnackBar, protected service: EntityService<T>, private sanitizer: DomSanitizer) {
+  protected constructor(private router: Router, protected route: ActivatedRoute, private _snackBar: MatSnackBar, protected service: EntityService<T>, private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {

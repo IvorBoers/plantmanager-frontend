@@ -16,13 +16,14 @@ import {PlantDiedEvent} from "../../../domain/plant-died-event";
 import {DomSanitizer} from "@angular/platform-browser";
 import {PlantLocationService} from "../../plant-location/plant-location-service";
 import {PlantLocation} from "../../../domain/plant-location";
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-plants-detail',
   templateUrl: './plants-detail.component.html',
   styleUrls: ['./plants-detail.component.scss']
 })
-export class PlantsDetailComponent extends AbstractDetailComponent<Plant>{
+export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
   allSeedPackages: SeedPackage[] = [];
   allPlantSpecies: PlantSpecies[] = [];
   allPlantLocations: PlantLocation[] = [];
@@ -38,10 +39,18 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant>{
   }
 
   ngOnInit() {
-    super.ngOnInit();
-    this.seedPackageService.getAll().subscribe(result => this.allSeedPackages = result);
-    this.plantSpeciesService.getAll().subscribe(result => this.allPlantSpecies = result);
-    this.plantLocationService.getAll().subscribe(result => this.allPlantLocations = result);
+
+    forkJoin({
+      seedpackages: this.seedPackageService.getAll(),
+      species: this.plantSpeciesService.getAll(),
+      locations: this.plantLocationService.getAll()}
+    ).subscribe(array => {
+      this.allPlantLocations = array['locations']
+      this.allPlantSpecies = array['species']
+      this.allSeedPackages = array['seedpackages']
+      super.ngOnInit();
+    });
+
   }
 
   getEntityName(): string {
@@ -53,7 +62,20 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant>{
   }
 
   createNewItem(): Plant {
-    return new Plant();
+    let plant = new Plant();
+    const seedPackageId = this.route.snapshot.paramMap.get('seedpackage');
+
+    if (seedPackageId) {
+      let seedPackage = this.allSeedPackages.find(sp => sp.id == Number(seedPackageId))
+      if (seedPackage) {
+        plant.plantSpecies = seedPackage.plantSpecies;
+        let event = new SeedStartEvent();
+        event.date = new Date();
+        event.seedPackage = seedPackage;
+        plant.seedStartEvent = event;
+      }
+    }
+    return plant;
   }
 
   setItem(one: Plant) {
