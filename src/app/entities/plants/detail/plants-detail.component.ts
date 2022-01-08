@@ -17,6 +17,10 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {PlantLocationService} from "../../plant-location/plant-location-service";
 import {PlantLocation} from "../../../domain/plant-location";
 import {forkJoin} from "rxjs";
+import {RelocationEvent} from "../../../domain/relocation-event";
+import {Event} from "../../../domain/event";
+import {ProducePickEventService} from "../../produce-pick-event/produce-pick-event-service";
+import {ProducePickEvent} from "../../../domain/produce-pick-event";
 
 @Component({
   selector: 'app-plants-detail',
@@ -30,11 +34,14 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
   hasBuyEvent = false;
   hasSeedStartEvent = false;
   hasPlantDiedEvent = false;
+  newRelocationEvent?:RelocationEvent;
+  private producePickEvents: ProducePickEvent[] = [];
 
   constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantService, sanitizer: DomSanitizer,
               protected plantLocationService: PlantLocationService,
               protected seedPackageService: SeedPackageService,
-              protected plantSpeciesService: PlantSpeciesService) {
+              protected plantSpeciesService: PlantSpeciesService,
+              protected producePickEventService: ProducePickEventService) {
     super(router, route, _snackBar, service, sanitizer)
   }
 
@@ -79,10 +86,28 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
   }
 
   setItem(one: Plant) {
-    super.setItem(one);
     this.hasBuyEvent = one.buyEvent != null;
     this.hasSeedStartEvent = one.seedStartEvent != null;
     this.hasPlantDiedEvent = one.plantDiedEvent != null;
+    if (one.relocationEvents.length == 0) {
+      this.startNewRelocationEvent();
+    } else {
+      one.relocationEvents.sort(this.compareByDate())
+    }
+    this.producePickEventService.getAllForPlant(one.id).subscribe(pickEvents => this.producePickEvents = pickEvents);
+    super.setItem(one);
+  }
+
+  startNewRelocationEvent() {
+    this.newRelocationEvent = new RelocationEvent()
+    this.newRelocationEvent.date = new Date()
+  }
+
+  saveRelocationEvent() {
+    if (this.newRelocationEvent instanceof RelocationEvent) {
+      this.item.relocationEvents.push(this.newRelocationEvent);
+    }
+    this.newRelocationEvent = undefined;
   }
 
   onBuyChangeEvent(event: MatCheckboxChange) {
@@ -115,4 +140,43 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
     }
   }
 
+  hasCurrentLocation(): boolean {
+    return this.item.relocationEvents.length > 0
+  }
+
+  getCurrentLocation(): PlantLocation | undefined {
+    if (this.hasCurrentLocation()) {
+      return this.item.relocationEvents[0].location;
+    }
+    return undefined;
+  }
+
+  getEventHistory() {
+    let result: Event[] = []
+    if (this.item) {
+      if (this.item.plantDiedEvent) {
+        result.push(this.item.plantDiedEvent)
+      }
+      if (this.item.buyEvent) {
+        result.push(this.item.buyEvent)
+      }
+      if (this.item.seedStartEvent) {
+        result.push(this.item.seedStartEvent)
+      }
+      this.item.relocationEvents.forEach(it => result.push(it))
+      this.producePickEvents.forEach(it => result.push(it))
+      result.sort(this.compareByDate());
+
+    }
+    return result
+  }
+
+  private compareByDate() {
+    return function (a: Event, b: Event) {
+      console.log("event " + a.constructor.name)
+      const c = new Date(a.date);
+      const d = new Date(b.date);
+      return d.getTime() - c.getTime();
+    };
+  }
 }

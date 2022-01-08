@@ -42,7 +42,7 @@
           <ng-container matColumnDef="plantLocation">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Plant location</th>
             <td mat-cell *matCellDef="let item">
-              <a routerLink="/entities/plantlocations/{{item.location?.id}}">{{item.location?.name}}</a></td>
+              <a *ngIf="hasCurrentLocation(item)" routerLink="/entities/plantlocations/{{getCurrentLocation(item)?.id}}">{{getCurrentLocation(item)?.name}}</a></td>
           </ng-container>
           <ng-container matColumnDef="source">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Source</th>

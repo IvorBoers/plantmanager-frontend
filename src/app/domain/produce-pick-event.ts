@@ -2,6 +2,7 @@ import {Event} from "./event";
 import {Plant} from "./plant";
 
 export class ProducePickEvent implements Event {
+  typeName = 'ProducePickEvent'
   id!: number
   date!: Date
   description = ""

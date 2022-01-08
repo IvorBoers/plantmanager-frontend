@@ -49,7 +49,9 @@ export class PlantLocationDetailComponent extends AbstractDetailComponent<PlantL
   }
 
   createNewItem(): PlantLocation {
-    return new PlantLocation();
+    let plantLocation = new PlantLocation();
+    plantLocation.color = '666666'
+    return plantLocation;
   }
 
   hexToRgb(hex: string) {

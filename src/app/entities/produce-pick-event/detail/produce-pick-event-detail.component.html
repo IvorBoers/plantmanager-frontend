@@ -22,7 +22,9 @@
           <mat-label>Plant</mat-label>
           <mat-select [(ngModel)]="item.plant" [compareWith]="compareById">
             <mat-option *ngFor="let plant of allPlants" [value]="plant">{{plant.id}} - {{plant.plantSpecies.name}}
-              - {{plant.location.name}}</mat-option>
+              - <span *ngIf="plant.relocationEvents.length"> {{plant.relocationEvents[0].location.name}} </span>
+              <span *ngIf="!plant.relocationEvents.length">Location not set</span>
+            </mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="fill">

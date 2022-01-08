@@ -27,3 +27,15 @@ table {
 .link {
   cursor: pointer;
 }
+.pm-formfield-inline {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  mat-form-field {
+    flex-grow: 400;
+  }
+  .action {
+    flex-shrink: 4;
+    max-height: 52px;
+  }
+}

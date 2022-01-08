@@ -1,7 +1,7 @@
 <div class="row justify-content-md-center">
   <div class="col-lg-8 g-0">
-    <div >
-      <mat-toolbar >
+    <div>
+      <mat-toolbar>
         <h1>Plant</h1>
         <span class="toolbar-spacer"></span>
         <button mat-icon-button class="btn" title="back to list" routerLink="/entities/plants">
@@ -30,13 +30,30 @@
               <mat-option *ngFor="let species of allPlantSpecies" [value]="species">{{species.name}}</mat-option>
             </mat-select>
           </mat-form-field>
+          <div class="pm-formfield-inline">
+            <mat-form-field appearance="fill" *ngIf="hasCurrentLocation">
+              <mat-label>Plant location</mat-label>
+              <input matInput disabled [value]="getCurrentLocation()?.name">
+            </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Plant location</mat-label>
-            <mat-select [(ngModel)]="item.location" [compareWith]="compareById">
-              <mat-option *ngFor="let location of allPlantLocations" [value]="location">{{location.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+            <button class="action" mat-stroked-button (click)="startNewRelocationEvent()">relocate</button>
+          </div>
+          <mat-card *ngIf="newRelocationEvent">
+            <mat-card-subtitle>Location for plant</mat-card-subtitle>
+            <mat-form-field appearance="fill">
+              <mat-label>Date</mat-label>
+              <input matInput [matDatepicker]="relocationEventDatepicker" [(ngModel)]="newRelocationEvent.date" required>
+              <mat-datepicker-toggle matSuffix [for]="relocationEventDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #relocationEventDatepicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Location</mat-label>
+              <mat-select [(ngModel)]="newRelocationEvent.location" [compareWith]="compareById">
+                <mat-option *ngFor="let location of allPlantLocations" [value]="location">{{location.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-button (click)="saveRelocationEvent()">Save</button>
+          </mat-card>
         </div>
 
         <div>
@@ -115,7 +132,17 @@
 
       </div>
       <div class="sidebar col-lg-4">
-        sidebar
+        <mat-list>
+          <div mat-subheader>History</div>
+          <mat-list-item *ngFor="let event of getEventHistory()">
+            <div mat-line *ngIf="event.typeName == 'BuyEvent'">Bought at {{$any(event).store}}</div>
+            <div mat-line *ngIf="event.typeName == 'SeedStartEvent'">Started from seed</div>
+            <div mat-line *ngIf="event.typeName == 'RelocationEvent'">Moved to {{$any(event).location?.name}}</div>
+            <div mat-line *ngIf="event.typeName == 'PlantDiedEvent'">Died</div>
+            <div mat-line *ngIf="event.typeName == 'ProducePickEvent'">Picked some produce</div>
+            <div mat-line>{{event.date | date}}</div>
+          </mat-list-item>
+        </mat-list>
       </div>
     </div>
   </div>

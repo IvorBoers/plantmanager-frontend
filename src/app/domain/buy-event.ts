@@ -1,6 +1,9 @@
 import {Event} from "./event";
 
 export class BuyEvent implements Event {
+
+  typeName = "BuyEvent"
+
   id!: number
   date!: Date
   description = ""

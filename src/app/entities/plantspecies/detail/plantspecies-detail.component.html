@@ -25,7 +25,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Type</mat-label>
-          <mat-select [(ngModel)]="item.type">
+          <mat-select [(ngModel)]="item.type" [compareWith]="compareById">
             <mat-option [value]="null">None</mat-option>
             <mat-option *ngFor="let type of allTypes" [value]="type">{{type.name}}</mat-option>
           </mat-select>
