@@ -27,15 +27,44 @@ table {
 .link {
   cursor: pointer;
 }
-.pm-formfield-inline {
+.pm-form-inline .mat-form-field {
+  margin-left: 8px;
+  :first-child {
+    margin-left: 0;
+  }
+}
+.pm-formfield-inline-row {
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
-  mat-form-field {
+  .mat-form-field {
     flex-grow: 400;
+    margin-left: 8px;
+
   }
   .action {
     flex-shrink: 4;
     max-height: 52px;
+  }
+  :first-child {
+    margin-left: 0;
+  }
+}
+.pm-history {
+  .mat-list-item {
+    border-left: 1px solid black;
+    :before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      width: 20px;
+      height: 20px;
+      right: -2px;
+      background-color: white;
+      border: 4px solid #FF9F55;
+      top: 15px;
+      border-radius: 50%;
+      z-index: 1;
+    }
   }
 }

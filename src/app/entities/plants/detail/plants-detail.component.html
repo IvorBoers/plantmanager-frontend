@@ -17,8 +17,8 @@
       </mat-toolbar>
     </div>
     <div class="row">
-      <div *ngIf="item" class="col-lg-8 pm-detail-form-container">
-        <div>
+      <div *ngIf="item" class="col-lg-8">
+        <div class="pm-detail-form-container">
           <mat-form-field appearance="fill">
             <mat-label>Id</mat-label>
             <input matInput disabled [(ngModel)]="item.id">
@@ -30,7 +30,7 @@
               <mat-option *ngFor="let species of allPlantSpecies" [value]="species">{{species.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div class="pm-formfield-inline">
+          <div class="pm-formfield-inline-row">
             <mat-form-field appearance="fill" *ngIf="hasCurrentLocation">
               <mat-label>Plant location</mat-label>
               <input matInput disabled [value]="getCurrentLocation()?.name">
@@ -58,7 +58,7 @@
 
         <div>
           <mat-checkbox [(ngModel)]="hasBuyEvent" (change)="onBuyChangeEvent($event)">Purchased</mat-checkbox>
-          <div *ngIf="item.buyEvent">
+          <div *ngIf="item.buyEvent" class="pm-form-inline">
             <mat-form-field appearance="fill">
               <mat-label>Buy date</mat-label>
               <input matInput [matDatepicker]="buyDateDatepicker" [(ngModel)]="item.buyEvent.date" required>
@@ -79,7 +79,13 @@
         </div>
         <div>
           <mat-checkbox [(ngModel)]="hasSeedStartEvent" (change)="onSeedStartChangeEvent($event)">Started from seed</mat-checkbox>
-          <div *ngIf="item.seedStartEvent">
+          <div *ngIf="item.seedStartEvent" class="pm-form-inline">
+            <mat-form-field appearance="fill">
+              <mat-label>Startdate</mat-label>
+              <input matInput [matDatepicker]="buyDateDatepicker" [(ngModel)]="item.seedStartEvent.date" required>
+              <mat-datepicker-toggle matSuffix [for]="buyDateDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #buyDateDatepicker></mat-datepicker>
+            </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>Seed package</mat-label>
               <mat-select [(ngModel)]="item.seedStartEvent.seedPackage" [compareWith]="compareById"
@@ -89,12 +95,6 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="fill">
-              <mat-label>Startdate</mat-label>
-              <input matInput [matDatepicker]="buyDateDatepicker" [(ngModel)]="item.seedStartEvent.date" required>
-              <mat-datepicker-toggle matSuffix [for]="buyDateDatepicker"></mat-datepicker-toggle>
-              <mat-datepicker #buyDateDatepicker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
               <mat-label>Description</mat-label>
               <textarea matInput [(ngModel)]="item.seedStartEvent.description"></textarea>
             </mat-form-field>
@@ -102,7 +102,7 @@
         </div>
         <div>
           <mat-checkbox [(ngModel)]="hasPlantDiedEvent" (change)="onPlantDiedChangeEvent($event)">Died</mat-checkbox>
-          <div *ngIf="item.plantDiedEvent">
+          <div *ngIf="item.plantDiedEvent" class="pm-form-inline">
             <div>
               <mat-form-field appearance="fill">
                 <mat-label>Buy date</mat-label>
@@ -132,7 +132,7 @@
 
       </div>
       <div class="sidebar col-lg-4">
-        <mat-list>
+        <mat-list class="pm-history">
           <div mat-subheader>History</div>
           <mat-list-item *ngFor="let event of getEventHistory()">
             <div mat-line *ngIf="event.typeName == 'BuyEvent'">Bought at {{$any(event).store}}</div>
