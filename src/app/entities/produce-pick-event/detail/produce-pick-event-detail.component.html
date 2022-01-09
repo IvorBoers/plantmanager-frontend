@@ -47,20 +47,7 @@
         </mat-form-field>
       </div>
       <div class="col-lg-4 g-0">
-        <img *ngIf="item.image" [src]="getImageSrc(item.image)" alt="produce picture" class="img-fluid">
-
-        <div class="row" *ngIf="!isCreate">
-          <mat-label>Image</mat-label>
-          <mat-label class="btn btn-default col-8">
-            <input type="file" (change)="selectFile('image', $event)">
-          </mat-label>
-          <div class="col-4">
-            <button mat-raised-button color="primary" [disabled]="!selectedFiles" (click)="upload('image')">
-              <mat-icon>file_upload</mat-icon><span>upload</span>
-            </button>
-          </div>
-        </div>
-
+        <app-imageview *ngIf="!isCreate" [imageId]="item.imageId" [altText]="'Produce'" (imageUploadEvent)="bindImageId($event)"></app-imageview>
       </div>
     </div>
   </div>

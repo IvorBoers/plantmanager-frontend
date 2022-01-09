@@ -3,10 +3,10 @@ import {AbstractDetailComponent} from "../../../shared/abstract-detail-component
 import {ProducePickEvent} from "../../../domain/produce-pick-event";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {DomSanitizer} from "@angular/platform-browser";
 import {ProducePickEventService} from "../produce-pick-event-service";
 import {PlantService} from "../../plants/plant-service";
 import {Plant} from "../../../domain/plant";
+import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-produce-pick-event-detail',
@@ -17,8 +17,8 @@ export class ProducePickEventDetailComponent extends AbstractDetailComponent<Pro
 
   allPlants: Plant[] = []
 
-  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: ProducePickEventService, sanitizer: DomSanitizer, protected plantService: PlantService) {
-    super(router, route, _snackBar, service, sanitizer)
+  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: ProducePickEventService, protected plantService: PlantService) {
+    super(router, route, _snackBar, service)
   }
 
   ngOnInit() {

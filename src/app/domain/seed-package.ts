@@ -9,6 +9,6 @@ export class SeedPackage implements Entity {
   percentFull = 100
   plantSpecies!: PlantSpecies
   buyEvent?: BuyEvent
-
+  imageId?: number
 
 }

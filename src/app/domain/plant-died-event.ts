@@ -7,5 +7,5 @@ export class PlantDiedEvent implements Event {
   date!: Date
   description = ""
   plant!: Plant
-  image!: string
+  imageId?: number
 }

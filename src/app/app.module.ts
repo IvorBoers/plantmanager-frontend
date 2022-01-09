@@ -43,6 +43,7 @@ import { PlantBlockComponent } from './plant-block/plant-block.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSliderModule} from "@angular/material/slider";
+import { ImageviewComponent } from './imageview/imageview.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -74,7 +75,8 @@ export const MY_FORMATS = {
     ProducePickEventListComponent,
     HomeComponent,
     SeedPackageBlockComponent,
-    PlantBlockComponent
+    PlantBlockComponent,
+    ImageviewComponent
   ],
   imports: [
     ReactiveFormsModule,

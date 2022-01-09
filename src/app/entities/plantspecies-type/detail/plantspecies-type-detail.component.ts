@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 import {AbstractDetailComponent} from "../../../shared/abstract-detail-component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {DomSanitizer} from "@angular/platform-browser";
 import {PlantSpeciesType} from "../../../domain/plant-species-type";
 import {PlantSpeciesTypeService} from "../plant-species-type-service";
+import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-plantspecies-type-detail',
@@ -14,8 +14,8 @@ import {PlantSpeciesTypeService} from "../plant-species-type-service";
 export class PlantSpeciesTypeDetailComponent extends AbstractDetailComponent<PlantSpeciesType>{
   all!: PlantSpeciesType[];
 
-  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantSpeciesTypeService, sanitizer: DomSanitizer) {
-    super(router, route, _snackBar, service, sanitizer)
+  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantSpeciesTypeService) {
+    super(router, route, _snackBar, service)
   }
 
   ngOnInit() {

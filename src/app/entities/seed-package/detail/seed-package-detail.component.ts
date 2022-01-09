@@ -6,9 +6,9 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {SeedPackageService} from "../seed-package-service";
 import {PlantSpeciesService} from "../../plantspecies/plant-species-service";
 import {PlantSpecies} from "../../../domain/plant-species";
-import {MatCheckbox, MatCheckboxChange} from "@angular/material/checkbox";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 import {BuyEvent} from "../../../domain/buy-event";
-import {DomSanitizer} from "@angular/platform-browser";
+import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-seed-package-detail',
@@ -19,8 +19,9 @@ export class SeedPackageDetailComponent extends AbstractDetailComponent<SeedPack
   allPlantSpecies: PlantSpecies[] = [];
   hasBuyEvent = false;
 
-  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: SeedPackageService, protected plantSpeciesService: PlantSpeciesService, sanitizer: DomSanitizer) {
-    super(router, route, _snackBar, service, sanitizer)
+  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: SeedPackageService,
+              protected plantSpeciesService: PlantSpeciesService) {
+    super(router, route, _snackBar, service)
   }
 
   ngOnInit() {

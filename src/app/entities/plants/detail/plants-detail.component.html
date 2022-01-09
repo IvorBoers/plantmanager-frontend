@@ -116,16 +116,7 @@
               </mat-form-field>
             </div>
             <div>
-              <img *ngIf="item.plantDiedEvent.image" [src]="getImageSrc(item.plantDiedEvent.image)" alt="species picture" class="img-fluid">
-              <span *ngIf="!isCreate">
-                <mat-label class="btn btn-default">
-                  <input type="file" (change)="selectFile('plantdiedevent', $event)">
-                </mat-label>
-
-                <button mat-raised-button color="primary" [disabled]="!selectedFiles" (click)="upload('plantdiedevent')">
-                  <mat-icon>file_upload</mat-icon><span>Upload</span>
-                </button>
-              </span>
+              <app-imageview *ngIf="!isCreate" [imageId]="item.plantDiedEvent.imageId" (imageUploadEvent)="bindImageIdToPlantDiedEvent($event)"></app-imageview>
             </div>
           </div>
         </div>

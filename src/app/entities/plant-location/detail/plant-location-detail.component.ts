@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {AbstractDetailComponent} from "../../../shared/abstract-detail-component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {DomSanitizer} from "@angular/platform-browser";
 import {PlantLocation} from "../../../domain/plant-location";
 import {PlantLocationService} from "../plant-location-service";
 import {FormControl} from "@angular/forms";
 import {Color} from '@angular-material-components/color-picker';
+import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-plant-location-detail',
@@ -18,8 +18,8 @@ export class PlantLocationDetailComponent extends AbstractDetailComponent<PlantL
   colorCtr: FormControl = new FormControl(null);
 
 
-  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantLocationService, sanitizer: DomSanitizer) {
-    super(router, route, _snackBar, service, sanitizer)
+  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantLocationService) {
+    super(router, route, _snackBar, service)
   }
 
   setItem(one: PlantLocation) {
@@ -66,4 +66,5 @@ export class PlantLocationDetailComponent extends AbstractDetailComponent<PlantL
       b: parseInt(result[3], 16)
     } : null;
   }
+
 }

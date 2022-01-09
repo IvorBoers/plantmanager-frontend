@@ -9,7 +9,7 @@ export class PlantSpecies implements Entity {
   maximumHeight!: number
   spacing!: number
   sungrade!: number
-  image!: string
+  imageId?: number
   type?: PlantSpeciesType
 
 

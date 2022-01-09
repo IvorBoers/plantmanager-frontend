@@ -2,7 +2,7 @@
   <div class="col-lg-8">
     <div class="row">
       <mat-toolbar class="col-12">
-        <h1>Seedpackage</h1>
+        <h1>Seed package</h1>
         <span class="toolbar-spacer"></span>
         <button mat-icon-button class="btn" title="Back to list" routerLink="/entities/seedpackages"><mat-icon>arrow_back</mat-icon></button>
         <button *ngIf="item" mat-icon-button class="btn" title="Start a plant from this seed" [routerLink]="['/entities/plants/new',{seedpackage:item.id}]"><mat-icon>play_arrow</mat-icon></button>
@@ -64,6 +64,7 @@
 
       </div>
       <div class="col-lg-4 g-0">
+        <app-imageview *ngIf="!isCreate" [imageId]="item.imageId" [altText]="'Seed package'" (imageUploadEvent)="bindImageId($event)"></app-imageview>
       </div>
     </div>
   </div>

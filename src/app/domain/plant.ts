@@ -5,7 +5,6 @@ import {SeedStartEvent} from "./seed-start-event";
 import {PlantDiedEvent} from "./plant-died-event";
 import {ProducePickEvent} from "./produce-pick-event";
 import {RelocationEvent} from "./relocation-event";
-import {PlantLocation} from "./plant-location";
 
 export class Plant implements Entity {
   id!: number;

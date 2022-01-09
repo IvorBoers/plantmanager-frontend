@@ -7,7 +7,7 @@ export class ProducePickEvent implements Event {
   date!: Date
   description = ""
   plant!: Plant
-  image!: string
+  imageId?: number
   count: number = 0
   weight: number = 0.0
 }

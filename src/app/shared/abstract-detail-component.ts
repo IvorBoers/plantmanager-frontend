@@ -3,17 +3,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Entity} from "../domain/entity";
 import {EntityService} from "./entity-service";
-import {DomSanitizer} from "@angular/platform-browser";
-import {HttpResponse} from "@angular/common/http";
 
 @Component({template: ''})
 export abstract class AbstractDetailComponent<T extends Entity> implements OnInit {
   item!: T;
   isCreate = false;
 
-  selectedFiles = new Map(); // maps fieldName to FileList;
-
-  protected constructor(private router: Router, protected route: ActivatedRoute, private _snackBar: MatSnackBar, protected service: EntityService<T>, private sanitizer: DomSanitizer) {
+  protected constructor(private router: Router, protected route: ActivatedRoute, private _snackBar: MatSnackBar,
+                        protected service: EntityService<T>) {
   }
 
   ngOnInit() {
@@ -37,7 +34,9 @@ export abstract class AbstractDetailComponent<T extends Entity> implements OnIni
   }
 
   protected loadItem(id: number) {
-    this.service.getOne(id).subscribe(one => this.setItem(one));
+    this.service.getOne(id).subscribe(one => {
+      this.setItem(one)
+    });
   }
 
   abstract createNewItem(): T;
@@ -62,42 +61,26 @@ export abstract class AbstractDetailComponent<T extends Entity> implements OnIni
       action = this.service.update(this.item);
     }
     action.subscribe(response => {
-      if (response != null && response.errorMessage !== undefined && response.errorMessage != null) {
-        this.openSnackBar("Error: " + response.errorMessage, this.getEntityName());
+      if (response.errorMessage) {
+        this.openSnackBar("Error saving entity: " + response.errorMessage, this.getEntityName());
       } else {
-        this.openSnackBar("Saved", this.getEntityName());
-        this.router.navigate([this.getOverviewRoute()]);
+        this.openSnackBar("Saved entity", this.getEntityName());
+        this.router.navigate([this.getOverviewRoute()]).then();
       }
     });
   }
 
-  getImageSrc(image: string) {
-    let objectURL = 'data:image/png;base64,' + image;
-    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  bindImageId($event: number) {
+    this.item.imageId = $event;
+    this.service.update(this.item).subscribe(updateResponse => {
+      if (updateResponse.errorMessage) {
+        this.openSnackBar("Failed to bind image to entity: " + updateResponse.errorMessage, "Image");
+      } else {
+        this.openSnackBar("Upload finished", "Image");
+      }
+    });
   }
-
   abstract getOverviewRoute(): string;
 
-  upload(key: string): void {
-    if (this.selectedFiles.has(key)) {
-      let currentFileUpload = this.selectedFiles.get(key).item(0);
-      if (currentFileUpload) {
-        this.service.upload(this.item.id, key, currentFileUpload).subscribe(event => {
-          if (event instanceof HttpResponse) {
-            console.log('File is completely uploaded!');
-            this.loadItem(this.item.id);
-            this.openSnackBar("Upload finished", "Image");
-          } else {
-            this.openSnackBar('Upload failed', "Image");
-          }
-        });
-      }
-      this.selectedFiles.delete(key);
-    }
-  }
-
-  selectFile(key: string, event: any) {
-    this.selectedFiles.set(key, event.target.files);
-  }
 }
 

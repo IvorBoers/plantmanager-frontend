@@ -1,0 +1,13 @@
+<img *ngIf="image" [src]="getImageSrc(image)" alt="{{altText}}" class="img-fluid">
+
+<div class="row">
+  <mat-label>Image</mat-label>
+  <mat-label class="btn btn-default col-8">
+    <input type="file" (change)="selectFile($event)">
+  </mat-label>
+  <div class="col-4">
+    <button mat-raised-button color="primary" [disabled]="!fileList" (click)="upload()">
+      <mat-icon>file_upload</mat-icon><span>upload</span>
+    </button>
+  </div>
+</div>

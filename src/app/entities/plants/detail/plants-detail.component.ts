@@ -13,7 +13,6 @@ import {MatSelectChange} from "@angular/material/select";
 import {PlantSpeciesService} from "../../plantspecies/plant-species-service";
 import {PlantSpecies} from "../../../domain/plant-species";
 import {PlantDiedEvent} from "../../../domain/plant-died-event";
-import {DomSanitizer} from "@angular/platform-browser";
 import {PlantLocationService} from "../../plant-location/plant-location-service";
 import {PlantLocation} from "../../../domain/plant-location";
 import {forkJoin} from "rxjs";
@@ -21,6 +20,8 @@ import {RelocationEvent} from "../../../domain/relocation-event";
 import {Event} from "../../../domain/event";
 import {ProducePickEventService} from "../../produce-pick-event/produce-pick-event-service";
 import {ProducePickEvent} from "../../../domain/produce-pick-event";
+import {ImagesService} from "../../../shared/images-service";
+import {PlantDiedEventService} from "../../../shared/plant-died-event-service";
 
 @Component({
   selector: 'app-plants-detail',
@@ -37,12 +38,14 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
   newRelocationEvent?:RelocationEvent;
   private producePickEvents: ProducePickEvent[] = [];
 
-  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantService, sanitizer: DomSanitizer,
+  constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantService,
               protected plantLocationService: PlantLocationService,
               protected seedPackageService: SeedPackageService,
               protected plantSpeciesService: PlantSpeciesService,
-              protected producePickEventService: ProducePickEventService) {
-    super(router, route, _snackBar, service, sanitizer)
+              protected producePickEventService: ProducePickEventService,
+              protected plantDiedEventService: PlantDiedEventService // TODO create component for each event
+  ) {
+    super(router, route, _snackBar, service)
   }
 
   ngOnInit() {
@@ -178,5 +181,18 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
       const d = new Date(b.date);
       return d.getTime() - c.getTime();
     };
+  }
+
+  bindImageIdToPlantDiedEvent($event: number) {
+    if (this.item.plantDiedEvent) {
+      this.item.plantDiedEvent.imageId = $event;
+      this.plantDiedEventService.update(this.item.plantDiedEvent).subscribe(updateResponse => {
+        if (updateResponse.errorMessage) {
+          this.openSnackBar("Failed to bind image to died event: " + updateResponse.errorMessage, "Image");
+        } else {
+          this.openSnackBar("Upload finished", "Image");
+        }
+      });
+    }
   }
 }
