@@ -67,6 +67,10 @@ export abstract class AbstractDetailComponent<T extends Entity> implements OnIni
         this.openSnackBar("Saved entity", this.getEntityName());
         this.router.navigate([this.getOverviewRoute()]).then();
       }
+    }, (response) => {
+      if (response.errorMessage) {
+        this.openSnackBar("Error saving entity: " + response.errorMessage, this.getEntityName());
+      }
     });
   }
 

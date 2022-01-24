@@ -19,7 +19,7 @@ export abstract class EntityService<T extends Entity> extends AbstractPlantManag
   }
 
   update(item: T): Observable<PostResponse> {
-      return this.http.post<PostResponse>(this.getUrl(), item);
+      return this.http.put<PostResponse>(this.getUrl(), item);
   }
 
   create(item: T): Observable<PostResponse> {

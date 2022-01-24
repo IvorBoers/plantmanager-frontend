@@ -6,7 +6,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {PlantSpeciesService} from "../plant-species-service";
 import {PlantSpeciesType} from "../../../domain/plant-species-type";
 import {PlantSpeciesTypeService} from "../../plantspecies-type/plant-species-type-service";
-import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-plantspecies-detail',

@@ -26,14 +26,14 @@
 
           <mat-form-field appearance="fill">
             <mat-label>Plant species</mat-label>
-            <mat-select [(ngModel)]="item.plantSpecies" [compareWith]="compareById">
+            <mat-select [(ngModel)]="item.species" [compareWith]="compareById">
               <mat-option *ngFor="let species of allPlantSpecies" [value]="species">{{species.name}}</mat-option>
             </mat-select>
           </mat-form-field>
           <div class="pm-formfield-inline-row">
-            <mat-form-field appearance="fill" *ngIf="hasCurrentLocation">
+            <mat-form-field appearance="fill" *ngIf="item.currentLocation">
               <mat-label>Plant location</mat-label>
-              <input matInput disabled [value]="getCurrentLocation()?.name">
+              <input matInput disabled [value]="item.currentLocation?.name">
             </mat-form-field>
 
             <button class="action" mat-stroked-button (click)="startNewRelocationEvent()">relocate</button>
@@ -48,11 +48,41 @@
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>Location</mat-label>
-              <mat-select [(ngModel)]="newRelocationEvent.location" [compareWith]="compareById">
-                <mat-option *ngFor="let location of allPlantLocations" [value]="location">{{location.name}}</mat-option>
+              <mat-select [(ngModel)]="newRelocationEvent.locationId" required>
+                <mat-option *ngFor="let location of allPlantLocations" [value]="location.id">{{location.name}}</mat-option>
               </mat-select>
             </mat-form-field>
             <button mat-button (click)="saveRelocationEvent()">Save</button>
+          </mat-card>
+
+          <div class="pm-formfield-inline-row">
+            <div class="mat-form-field">
+              <span>Total produce: count={{getTotalProduceCount()}} - weight={{getTotalProduceWeight()}}</span>
+            </div>
+
+            <button class="action" mat-stroked-button (click)="startNewProducePickEvent()">add produce</button>
+          </div>
+          <mat-card *ngIf="newProducePickEvent">
+            <mat-card-subtitle>Produce for plant</mat-card-subtitle>
+            <mat-form-field appearance="fill">
+              <mat-label>Date</mat-label>
+              <input matInput [matDatepicker]="relocationEventDatepicker" [(ngModel)]="newProducePickEvent.date" required>
+              <mat-datepicker-toggle matSuffix [for]="relocationEventDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #relocationEventDatepicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Description</mat-label>
+              <textarea matInput [(ngModel)]="newProducePickEvent.description"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Count</mat-label>
+              <input matInput [(ngModel)]="newProducePickEvent.count">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Weight (kg)</mat-label>
+              <input matInput [(ngModel)]="newProducePickEvent.weight">
+            </mat-form-field>
+            <button mat-button (click)="saveProducePickEvent()">Save</button>
           </mat-card>
         </div>
 
@@ -88,9 +118,9 @@
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>Seed package</mat-label>
-              <mat-select [(ngModel)]="item.seedStartEvent.seedPackage" [compareWith]="compareById"
-                          (selectionChange)="onSeedPackageChangeEvent($event)">
-                <mat-option *ngFor="let seedPackage of allSeedPackages" [value]="seedPackage">{{seedPackage.plantSpecies.id}}
+              <mat-select [(ngModel)]="item.seedStartEvent.seedPackageId"
+                          (selectionChange)="onSeedPackageChangeEvent($event)" required>
+                <mat-option *ngFor="let seedPackage of allSeedPackages" [value]="seedPackage.id">{{seedPackage.plantSpecies.id}}
                   - {{seedPackage.plantSpecies.name}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -102,21 +132,21 @@
         </div>
         <div>
           <mat-checkbox [(ngModel)]="hasPlantDiedEvent" (change)="onPlantDiedChangeEvent($event)">Died</mat-checkbox>
-          <div *ngIf="item.plantDiedEvent" class="pm-form-inline">
+          <div *ngIf="item.diedEvent" class="pm-form-inline">
             <div>
               <mat-form-field appearance="fill">
-                <mat-label>Buy date</mat-label>
-                <input matInput [matDatepicker]="buyDateDatepicker" [(ngModel)]="item.plantDiedEvent.date" required>
+                <mat-label>Died on date</mat-label>
+                <input matInput [matDatepicker]="buyDateDatepicker" [(ngModel)]="item.diedEvent.date" required>
                 <mat-datepicker-toggle matSuffix [for]="buyDateDatepicker"></mat-datepicker-toggle>
                 <mat-datepicker #buyDateDatepicker></mat-datepicker>
               </mat-form-field>
               <mat-form-field appearance="fill">
                 <mat-label>Description</mat-label>
-                <textarea matInput [(ngModel)]="item.plantDiedEvent.description"></textarea>
+                <textarea matInput [(ngModel)]="item.diedEvent.description"></textarea>
               </mat-form-field>
             </div>
             <div>
-              <app-imageview *ngIf="!isCreate" [imageId]="item.plantDiedEvent.imageId" (imageUploadEvent)="bindImageIdToPlantDiedEvent($event)"></app-imageview>
+              <app-imageview *ngIf="!isCreate" [imageId]="item.diedEvent.imageId" (imageUploadEvent)="bindImageIdToPlantDiedEvent($event)"></app-imageview>
             </div>
           </div>
         </div>
@@ -128,7 +158,7 @@
           <mat-list-item *ngFor="let event of getEventHistory()">
             <div mat-line *ngIf="event.typeName == 'BuyEvent'">Bought at {{$any(event).store}}</div>
             <div mat-line *ngIf="event.typeName == 'SeedStartEvent'">Started from seed</div>
-            <div mat-line *ngIf="event.typeName == 'RelocationEvent'">Moved to {{$any(event).location?.name}}</div>
+            <div mat-line *ngIf="event.typeName == 'RelocationEvent'">Moved to {{getLocationName($any(event).locationId)}}</div>
             <div mat-line *ngIf="event.typeName == 'PlantDiedEvent'">Died</div>
             <div mat-line *ngIf="event.typeName == 'ProducePickEvent'">Picked some produce</div>
             <div mat-line>{{event.date | date}}</div>

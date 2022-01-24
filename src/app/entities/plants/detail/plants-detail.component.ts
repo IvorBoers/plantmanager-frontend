@@ -18,10 +18,8 @@ import {PlantLocation} from "../../../domain/plant-location";
 import {forkJoin} from "rxjs";
 import {RelocationEvent} from "../../../domain/relocation-event";
 import {Event} from "../../../domain/event";
-import {ProducePickEventService} from "../../produce-pick-event/produce-pick-event-service";
-import {ProducePickEvent} from "../../../domain/produce-pick-event";
-import {ImagesService} from "../../../shared/images-service";
 import {PlantDiedEventService} from "../../../shared/plant-died-event-service";
+import {ProducePickEvent} from "../../../domain/produce-pick-event";
 
 @Component({
   selector: 'app-plants-detail',
@@ -36,13 +34,12 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
   hasSeedStartEvent = false;
   hasPlantDiedEvent = false;
   newRelocationEvent?:RelocationEvent;
-  private producePickEvents: ProducePickEvent[] = [];
+  newProducePickEvent?: ProducePickEvent;
 
   constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantService,
               protected plantLocationService: PlantLocationService,
               protected seedPackageService: SeedPackageService,
               protected plantSpeciesService: PlantSpeciesService,
-              protected producePickEventService: ProducePickEventService,
               protected plantDiedEventService: PlantDiedEventService // TODO create component for each event
   ) {
     super(router, route, _snackBar, service)
@@ -78,10 +75,10 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
     if (seedPackageId) {
       let seedPackage = this.allSeedPackages.find(sp => sp.id == Number(seedPackageId))
       if (seedPackage) {
-        plant.plantSpecies = seedPackage.plantSpecies;
+        plant.species = seedPackage.plantSpecies;
         let event = new SeedStartEvent();
         event.date = new Date();
-        event.seedPackage = seedPackage;
+        event.seedPackageId = seedPackage.id;
         plant.seedStartEvent = event;
       }
     }
@@ -89,21 +86,21 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
   }
 
   setItem(one: Plant) {
-    this.hasBuyEvent = one.buyEvent != null;
-    this.hasSeedStartEvent = one.seedStartEvent != null;
-    this.hasPlantDiedEvent = one.plantDiedEvent != null;
+    if (one.buyEvent) this.hasBuyEvent = true;
+    if (one.seedStartEvent) this.hasSeedStartEvent = true;
+    this.hasPlantDiedEvent = one.diedEvent != null;
+    super.setItem(one);
     if (one.relocationEvents.length == 0) {
       this.startNewRelocationEvent();
     } else {
       one.relocationEvents.sort(this.compareByDate())
     }
-    this.producePickEventService.getAllForPlant(one.id).subscribe(pickEvents => this.producePickEvents = pickEvents);
-    super.setItem(one);
   }
 
   startNewRelocationEvent() {
     this.newRelocationEvent = new RelocationEvent()
     this.newRelocationEvent.date = new Date()
+    this.newRelocationEvent.plantId = this.item.id;
   }
 
   saveRelocationEvent() {
@@ -111,11 +108,13 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
       this.item.relocationEvents.push(this.newRelocationEvent);
     }
     this.newRelocationEvent = undefined;
+    this.save();
   }
 
   onBuyChangeEvent(event: MatCheckboxChange) {
     if (event.checked) {
       this.item.buyEvent = new BuyEvent();
+      this.item.buyEvent.plantId = this.item.id;
     } else {
       this.item.buyEvent = undefined;
     }
@@ -124,6 +123,7 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
   onSeedStartChangeEvent(event: MatCheckboxChange) {
     if (event.checked) {
       this.item.seedStartEvent = new SeedStartEvent();
+      this.item.seedStartEvent.plantId = this.item.id;
     } else {
       this.item.seedStartEvent = undefined;
     }
@@ -131,34 +131,24 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
 
   onSeedPackageChangeEvent(event: MatSelectChange) {
     if (event.value) {
-      this.item.plantSpecies = event.value.plantSpecies;
+      this.item.species = event.value.plantSpecies;
     }
   }
 
   onPlantDiedChangeEvent(event: MatCheckboxChange) {
     if (event.checked) {
-      this.item.plantDiedEvent = new PlantDiedEvent();
+      this.item.diedEvent = new PlantDiedEvent();
+      this.item.diedEvent.plantId = this.item.id;
     } else {
-      this.item.plantDiedEvent = undefined;
+      this.item.diedEvent = undefined;
     }
-  }
-
-  hasCurrentLocation(): boolean {
-    return this.item.relocationEvents.length > 0
-  }
-
-  getCurrentLocation(): PlantLocation | undefined {
-    if (this.hasCurrentLocation()) {
-      return this.item.relocationEvents[0].location;
-    }
-    return undefined;
   }
 
   getEventHistory() {
     let result: Event[] = []
     if (this.item) {
-      if (this.item.plantDiedEvent) {
-        result.push(this.item.plantDiedEvent)
+      if (this.item.diedEvent) {
+        result.push(this.item.diedEvent)
       }
       if (this.item.buyEvent) {
         result.push(this.item.buyEvent)
@@ -166,8 +156,11 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
       if (this.item.seedStartEvent) {
         result.push(this.item.seedStartEvent)
       }
+      if (this.item.producePickEvents) {
+        this.item.producePickEvents.forEach(it => result.push(it))
+      }
       this.item.relocationEvents.forEach(it => result.push(it))
-      this.producePickEvents.forEach(it => result.push(it))
+
       result.sort(this.compareByDate());
 
     }
@@ -184,9 +177,9 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
   }
 
   bindImageIdToPlantDiedEvent($event: number) {
-    if (this.item.plantDiedEvent) {
-      this.item.plantDiedEvent.imageId = $event;
-      this.plantDiedEventService.update(this.item.plantDiedEvent).subscribe(updateResponse => {
+    if (this.item.diedEvent) {
+      this.item.diedEvent.imageId = $event;
+      this.plantDiedEventService.update(this.item.diedEvent).subscribe(updateResponse => {
         if (updateResponse.errorMessage) {
           this.openSnackBar("Failed to bind image to died event: " + updateResponse.errorMessage, "Image");
         } else {
@@ -194,5 +187,39 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
         }
       });
     }
+  }
+
+  getTotalProduceCount() {
+    let count = 0;
+    if (this.item && this.item.producePickEvents) {
+      this.item.producePickEvents.forEach(it => count += it.count)
+    }
+    return count
+  }
+
+  getTotalProduceWeight() {
+    let count = 0;
+    if (this.item && this.item.producePickEvents) {
+      this.item.producePickEvents.forEach(it => count += it.weight)
+    }
+    return count
+  }
+
+  startNewProducePickEvent() {
+    let event = this.newProducePickEvent = new ProducePickEvent()
+    event.date = new Date()
+    return event
+  }
+
+  saveProducePickEvent() {
+    if (this.newProducePickEvent instanceof ProducePickEvent) {
+      this.item.producePickEvents.push(this.newProducePickEvent);
+    }
+    this.newProducePickEvent = undefined;
+    this.save();
+  }
+
+  getLocationName(locationId: number) {
+    return this.allPlantLocations.find(it => it.id == locationId)?.name;
   }
 }

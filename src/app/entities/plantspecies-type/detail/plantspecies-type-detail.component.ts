@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PlantSpeciesType} from "../../../domain/plant-species-type";
 import {PlantSpeciesTypeService} from "../plant-species-type-service";
-import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-plantspecies-type-detail',
@@ -28,7 +27,7 @@ export class PlantSpeciesTypeDetailComponent extends AbstractDetailComponent<Pla
   }
 
   getOverviewRoute() {
-    return "entities/plantspecies-types";
+    return "entities/plantspeciestypes";
   }
 
   createNewItem(): PlantSpeciesType {

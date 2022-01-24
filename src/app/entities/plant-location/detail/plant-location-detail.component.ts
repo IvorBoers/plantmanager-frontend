@@ -6,7 +6,6 @@ import {PlantLocation} from "../../../domain/plant-location";
 import {PlantLocationService} from "../plant-location-service";
 import {FormControl} from "@angular/forms";
 import {Color} from '@angular-material-components/color-picker';
-import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-plant-location-detail',

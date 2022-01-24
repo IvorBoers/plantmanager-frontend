@@ -6,7 +6,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {ProducePickEventService} from "../produce-pick-event-service";
 import {PlantService} from "../../plants/plant-service";
 import {Plant} from "../../../domain/plant";
-import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-produce-pick-event-detail',
@@ -39,7 +38,7 @@ export class ProducePickEventDetailComponent extends AbstractDetailComponent<Pro
         console.log("plantId=" + plantId + ", looking for it in " + this.allPlants.length + " plants")
         let plant = this.allPlants.find(it => it.id == Number(plantId));
         if (plant) {
-          newItem.plant = plant;
+          newItem.plantId = plant.id;
         }
       }
 
@@ -54,5 +53,11 @@ export class ProducePickEventDetailComponent extends AbstractDetailComponent<Pro
     return "entities/producepickevents";
   }
 
-
+  getPlantName(plant: Plant) {
+    var name =  "" + plant.id;
+    if (plant.species) {
+      name = name + " " + plant.species.name
+    }
+    return name
+  }
 }

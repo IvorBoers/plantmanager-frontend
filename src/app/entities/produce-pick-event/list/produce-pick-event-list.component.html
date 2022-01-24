@@ -40,7 +40,7 @@
           <ng-container matColumnDef="plant">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Plant</th>
             <td mat-cell *matCellDef="let item">
-              <a routerLink="/entities/plants/{{item.plant.id}}">{{item.plant.plantSpecies.name}} in {{item.plant.location?.name}}</a>
+              <a routerLink="/entities/plants/{{item.plantId}}">{{item.plantId}}</a>
             </td>
           </ng-container>
           <!-- count column -->

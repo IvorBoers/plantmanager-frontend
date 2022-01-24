@@ -9,9 +9,9 @@
   <mat-nav-list>
     <mat-list-item *ngFor="let item of items" routerLink="/entities/plants/{{item.id}}">
       <mat-icon mat-list-icon>yard</mat-icon>
-      <div mat-line>{{item.plantSpecies.name}}</div>
-      <div mat-line *ngIf="item.relocationEvents.length"> {{item.relocationEvents[0].location.name}} </div>
-      <div mat-line *ngIf="!item.relocationEvents.length">Location not set</div>
+      <div mat-line>{{item.species.name}}</div>
+      <div mat-line *ngIf="item.currentLocation"> {{item.currentLocation.name}} </div>
+      <div mat-line *ngIf="!item.currentLocation">No current location is set</div>
     </mat-list-item>
   </mat-nav-list>
 </mat-card>

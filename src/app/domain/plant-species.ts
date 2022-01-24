@@ -11,6 +11,6 @@ export class PlantSpecies implements Entity {
   sungrade!: number
   imageId?: number
   type?: PlantSpeciesType
-
+  typeId?: number
 
 }
