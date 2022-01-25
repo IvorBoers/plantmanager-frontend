@@ -26,7 +26,7 @@
 
           <mat-form-field appearance="fill">
             <mat-label>Plant species</mat-label>
-            <mat-select [(ngModel)]="item.species" [compareWith]="compareById">
+            <mat-select [(ngModel)]="item.species" [compareWith]="compareById" required>
               <mat-option *ngFor="let species of allPlantSpecies" [value]="species">{{species.name}}</mat-option>
             </mat-select>
           </mat-form-field>
