@@ -6,6 +6,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {PlantSpeciesService} from "../plant-species-service";
 import {PlantSpeciesType} from "../../../domain/plant-species-type";
 import {PlantSpeciesTypeService} from "../../plantspecies-type/plant-species-type-service";
+import {GrowPeriod} from "../../../domain/grow-period";
 
 @Component({
   selector: 'app-plantspecies-detail',
@@ -15,6 +16,15 @@ import {PlantSpeciesTypeService} from "../../plantspecies-type/plant-species-typ
 export class PlantSpeciesDetailComponent extends AbstractDetailComponent<PlantSpecies>{
   all!: PlantSpecies[];
   allTypes!: PlantSpeciesType[];
+  newGrowPeriod?: GrowPeriod;
+  growPhases = ['SOWING_INDOOR',
+    'SOWING_UNDER_GLASS',
+    'SOWING_OUTSIDE',
+    'PLANT_UNDER_GLASS',
+    'PLANT_OUTSIDE',
+    'HARVEST']
+
+  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
   constructor(router: Router, route: ActivatedRoute, _snackBar: MatSnackBar, service: PlantSpeciesService,
               protected typeService: PlantSpeciesTypeService) {
@@ -25,6 +35,17 @@ export class PlantSpeciesDetailComponent extends AbstractDetailComponent<PlantSp
     super.ngOnInit();
     this.service.getAll().subscribe(result => this.all = result);
     this.typeService.getAll().subscribe(result => this.allTypes = result);
+  }
+
+  save(redirectToOverview?: boolean) {
+    if (this.item.parentId) {
+      // set type of parent on this item
+      let parentSpecies = this.all.find(it => it.id == this.item.parentId);
+      if (parentSpecies) {
+        this.item.type = parentSpecies.type;
+      }
+    }
+    super.save(redirectToOverview);
   }
 
   getEntityName(): string {
@@ -39,4 +60,15 @@ export class PlantSpeciesDetailComponent extends AbstractDetailComponent<PlantSp
     return new PlantSpecies();
   }
 
+  saveGrowPeriod() {
+    if (this.newGrowPeriod instanceof GrowPeriod) {
+      this.item.growPeriods.push(this.newGrowPeriod);
+    }
+    this.newGrowPeriod = undefined;
+    this.save();
+  }
+
+  startNewGrowPeriod() {
+    this.newGrowPeriod = new GrowPeriod();
+  }
 }

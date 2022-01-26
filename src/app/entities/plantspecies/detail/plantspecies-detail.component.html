@@ -7,7 +7,7 @@
         <button mat-icon-button class="btn" routerLink="/entities/plantspecies">
           <mat-icon>arrow_back</mat-icon>
         </button>
-        <button mat-icon-button class="btn btn-primary" (click)="save()">
+        <button mat-icon-button class="btn btn-primary" (click)="save(true)">
           <mat-icon>save</mat-icon>
         </button>
       </mat-toolbar>
@@ -24,6 +24,13 @@
           <input matInput [(ngModel)]="item.name">
         </mat-form-field>
         <mat-form-field appearance="fill">
+          <mat-label>Parent</mat-label>
+          <mat-select [(ngModel)]="item.parentId">
+            <mat-option [value]="null">None</mat-option>
+            <mat-option *ngFor="let parent of all" [value]="parent.id">{{parent.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="!item.parentId">
           <mat-label>Type</mat-label>
           <mat-select [(ngModel)]="item.type" [compareWith]="compareById">
             <mat-option [value]="null">None</mat-option>
@@ -31,16 +38,85 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="fill">
+          <mat-label>Maximum height</mat-label>
+          <input matInput [(ngModel)]="item.maximumHeight" min="0">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Sungrade</mat-label>
+          <input matInput [(ngModel)]="item.sungrade" min="0" max="10">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
           <mat-label>Description</mat-label>
           <textarea matInput [(ngModel)]="item.description"></textarea>
         </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Parent</mat-label>
-          <mat-select [(ngModel)]="item.parentId">
-            <mat-option [value]="null">None</mat-option>
-            <mat-option *ngFor="let parent of all" [value]="parent.id">{{parent.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+
+        <mat-list>
+          <ng-container *ngFor="let phase of growPhases">
+            <div mat-subheader>{{phase}}</div>
+            <ng-container *ngFor="let period of item.growPeriods" >
+              <mat-list-item *ngIf="phase == period.phase">
+                <div mat-line>From week {{period.start.week + 1}} of {{months[period.start.month]}} to week {{period.end.week + 1}} of {{months[period.end.month]}}</div>
+                <div mat-line>{{period.description}}</div>
+              </mat-list-item>
+            </ng-container>
+          </ng-container>
+
+        </mat-list>
+
+        <button class="action" mat-stroked-button (click)="startNewGrowPeriod()">Add grow period</button>
+        <mat-card *ngIf="newGrowPeriod">
+          <mat-card-subtitle>Growperiod</mat-card-subtitle>
+          <mat-form-field appearance="fill">
+            <mat-label>Phase</mat-label>
+            <mat-select [(ngModel)]="newGrowPeriod.phase" required>
+              <mat-option *ngFor="let phase of growPhases" [value]="phase" >{{phase}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <fieldset class="pm-form-inline">
+            <legend>Start</legend>
+            <mat-form-field appearance="fill">
+              <mat-label>Week</mat-label>
+              <mat-select [(ngModel)]="newGrowPeriod.start.week">
+                <mat-option [value]="0">First week</mat-option>
+                <mat-option [value]="1">Second week</mat-option>
+                <mat-option [value]="2">Third week</mat-option>
+                <mat-option [value]="3">Fourth week</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Month</mat-label>
+              <mat-select [(ngModel)]="newGrowPeriod.start.month">
+                <mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </fieldset>
+          <fieldset class="pm-form-inline">
+            <legend>End</legend>
+            <mat-form-field appearance="fill">
+              <mat-label>Week</mat-label>
+              <mat-select [(ngModel)]="newGrowPeriod.end.week">
+                <mat-option [value]="0">First week</mat-option>
+                <mat-option [value]="1">Second week</mat-option>
+                <mat-option [value]="2">Third week</mat-option>
+                <mat-option [value]="3">Fourth week</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Month</mat-label>
+              <mat-select [(ngModel)]="newGrowPeriod.end.month">
+                <mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </fieldset>
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <textarea matInput [(ngModel)]="newGrowPeriod.description"></textarea>
+          </mat-form-field>
+          <button mat-button (click)="saveGrowPeriod()">Save</button>
+        </mat-card>
+
       </div>
       <div class="col-lg-4 g-0">
         <app-imageview *ngIf="!isCreate" [imageId]="item.imageId" [altText]="'Species'" (imageUploadEvent)="bindImageId($event)"></app-imageview>

@@ -6,7 +6,7 @@
         <span class="toolbar-spacer"></span>
         <button mat-icon-button class="btn" title="Back to list" routerLink="/entities/seedpackages"><mat-icon>arrow_back</mat-icon></button>
         <button *ngIf="item" mat-icon-button class="btn" title="Start a plant from this seed" [routerLink]="['/entities/plants/new',{seedpackage:item.id}]"><mat-icon>play_arrow</mat-icon></button>
-        <button mat-icon-button class="btn btn-primary" title="save" (click)="save()"><mat-icon>save</mat-icon></button>
+        <button mat-icon-button class="btn btn-primary" title="save" (click)="save(true)"><mat-icon>save</mat-icon></button>
       </mat-toolbar>
     </div>
 

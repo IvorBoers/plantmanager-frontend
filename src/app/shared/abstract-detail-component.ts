@@ -53,7 +53,7 @@ export abstract class AbstractDetailComponent<T extends Entity> implements OnIni
     });
   }
 
-  save() {
+  save(redirectToOverview?: boolean) {
     let action;
     if (this.isCreate) {
       action = this.service.create(this.item);
@@ -65,7 +65,9 @@ export abstract class AbstractDetailComponent<T extends Entity> implements OnIni
         this.openSnackBar("Error saving entity: " + response.errorMessage, this.getEntityName());
       } else {
         this.openSnackBar("Saved entity", this.getEntityName());
-        this.router.navigate([this.getOverviewRoute()]).then();
+        if (redirectToOverview) {
+          this.router.navigate([this.getOverviewRoute()]).then();
+        }
       }
     }, (response) => {
       if (response.errorMessage) {

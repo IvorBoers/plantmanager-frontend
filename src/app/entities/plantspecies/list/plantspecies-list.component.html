@@ -57,11 +57,6 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Maximum height</th>
             <td mat-cell *matCellDef="let item"> {{item.maximumHeight}} </td>
           </ng-container>
-          <!-- spacing column -->
-          <ng-container matColumnDef="spacing">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Spacing</th>
-            <td mat-cell *matCellDef="let item"> {{item.spacing}} </td>
-          </ng-container>
           <!-- sungrade column -->
           <ng-container matColumnDef="sungrade">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Sungrade</th>
@@ -71,7 +66,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" pageSize="25"></mat-paginator>
       </div>
     </div>
   </div>
