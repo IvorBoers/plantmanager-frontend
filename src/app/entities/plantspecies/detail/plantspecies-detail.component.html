@@ -50,72 +50,103 @@
           <textarea matInput [(ngModel)]="item.description"></textarea>
         </mat-form-field>
 
-        <mat-list>
-          <ng-container *ngFor="let phase of growPhases">
-            <div mat-subheader>{{phase}}</div>
-            <ng-container *ngFor="let period of item.growPeriods" >
-              <mat-list-item *ngIf="phase == period.phase">
-                <div mat-line>From week {{period.start.week + 1}} of {{months[period.start.month]}} to week {{period.end.week + 1}} of {{months[period.end.month]}}</div>
-                <div mat-line>{{period.description}}</div>
-              </mat-list-item>
-            </ng-container>
-          </ng-container>
 
-        </mat-list>
-
-        <button class="action" mat-stroked-button (click)="startNewGrowPeriod()">Add grow period</button>
+        <mat-toolbar class="col-12">
+          <h2>Grow periods</h2>
+          <span class="toolbar-spacer"></span>
+          <button *ngIf="selectedGrowPeriod" mat-icon-button (click)="editGrowPeriod()" aria-label="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button *ngIf="selectedGrowPeriod" mat-icon-button (click)="deleteGrowPeriod()" aria-label="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button class="btn btn-primary" (click)="startNewGrowPeriod()">
+            <mat-icon>post_add</mat-icon>
+          </button>
+        </mat-toolbar>
         <mat-card *ngIf="newGrowPeriod">
-          <mat-card-subtitle>Growperiod</mat-card-subtitle>
+          <mat-card-subtitle *ngIf="newGrowPeriod.id">Edit growperiod</mat-card-subtitle>
+          <mat-card-subtitle *ngIf="!newGrowPeriod.id">New growperiod</mat-card-subtitle>
           <mat-form-field appearance="fill">
             <mat-label>Phase</mat-label>
             <mat-select [(ngModel)]="newGrowPeriod.phase" required>
               <mat-option *ngFor="let phase of growPhases" [value]="phase" >{{phase}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <fieldset class="pm-form-inline">
-            <legend>Start</legend>
-            <mat-form-field appearance="fill">
-              <mat-label>Week</mat-label>
-              <mat-select [(ngModel)]="newGrowPeriod.start.week">
-                <mat-option [value]="0">First week</mat-option>
-                <mat-option [value]="1">Second week</mat-option>
-                <mat-option [value]="2">Third week</mat-option>
-                <mat-option [value]="3">Fourth week</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-              <mat-label>Month</mat-label>
-              <mat-select [(ngModel)]="newGrowPeriod.start.month">
-                <mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-          </fieldset>
-          <fieldset class="pm-form-inline">
-            <legend>End</legend>
-            <mat-form-field appearance="fill">
-              <mat-label>Week</mat-label>
-              <mat-select [(ngModel)]="newGrowPeriod.end.week">
-                <mat-option [value]="0">First week</mat-option>
-                <mat-option [value]="1">Second week</mat-option>
-                <mat-option [value]="2">Third week</mat-option>
-                <mat-option [value]="3">Fourth week</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>Month</mat-label>
-              <mat-select [(ngModel)]="newGrowPeriod.end.month">
-                <mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </fieldset>
+          <mat-card-subtitle>Start</mat-card-subtitle>
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Week</mat-label>
+                <mat-select [(ngModel)]="newGrowPeriod.start.week">
+                  <mat-option [value]="0">First week</mat-option>
+                  <mat-option [value]="1">Second week</mat-option>
+                  <mat-option [value]="2">Third week</mat-option>
+                  <mat-option [value]="3">Fourth week</mat-option>
+                </mat-select>
+              </mat-form-field>
+                </div>
+                <div class="col-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Month</mat-label>
+                <mat-select [(ngModel)]="newGrowPeriod.start.month">
+                  <mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-card-subtitle>End</mat-card-subtitle>
+            <div class="row">
+              <div class="col-6">
+                <mat-form-field appearance="fill">
+                  <mat-label>Week</mat-label>
+                  <mat-select [(ngModel)]="newGrowPeriod.end.week">
+                    <mat-option [value]="0">First week</mat-option>
+                    <mat-option [value]="1">Second week</mat-option>
+                    <mat-option [value]="2">Third week</mat-option>
+                    <mat-option [value]="3">Fourth week</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-6">
+                <mat-form-field appearance="fill">
+                  <mat-label>Month</mat-label>
+                  <mat-select [(ngModel)]="newGrowPeriod.end.month">
+                    <mat-option *ngFor="let month of months; let i = index" [value]="i">{{month}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
           <mat-form-field appearance="fill">
             <mat-label>Description</mat-label>
             <textarea matInput [(ngModel)]="newGrowPeriod.description"></textarea>
           </mat-form-field>
           <button mat-button (click)="saveGrowPeriod()">Save</button>
         </mat-card>
+        <table class="pm-growperiods-table" *ngIf="item.growPeriods?.length gt 0">
+          <thead role="rowgroup">
+          <tr class="pm-growperiods-row pm-growperiods-header-row">
+            <th class="pm-growperiods-header-cell">Month</th>
+            <ng-container *ngFor="let wk of item.growPeriods[0].calendarRow; let i = index">
+              <th class="pm-growperiods-header-cell" *ngIf="(i + 4) % 4 == 0" colspan="4">{{months[i / 4]}}</th>
+            </ng-container>
+          </tr>
+          <tr  class="pm-growperiods-row pm-growperiods-header-row">
+            <th class="pm-growperiods-header-cell"> Phase</th>
+            <th class="pm-growperiods-header-cell"  *ngFor="let wk of item.growPeriods[0].calendarRow; let i = index">{{i % 4 + 1}}</th>
+          </tr>
+          </thead>
+          <tbody role="rowgroup">
+            <tr *ngFor="let row of item.growPeriods; let i = index" class="pm-growperiods-row pm-phase-{{row.phase}}" (click)="setSelectedGrowPeriod(row)" [ngClass]="{'pm-selected': selectedGrowPeriod == row}">
+              <th class="pm-growperiods-header-cell">{{row.phase}}</th>
+              <td class="pm-growperiods-cell" *ngFor="let wk of row.calendarRow" [ngClass]="{'pm-filled': wk}">
+                <ng-container *ngIf="wk">X</ng-container>
+                <ng-container *ngIf="!wk">&nbsp;</ng-container>
+              </td>
+              <tr>
+            </tr>
+          </tbody>
+        </table>
 
       </div>
       <div class="col-lg-4 g-0">

@@ -8,4 +8,5 @@ export class GrowPeriod implements Entity {
   end = new WeekOfMonth
   phase!: string
   description?: string
+  calendarRow: boolean[] = []
 }

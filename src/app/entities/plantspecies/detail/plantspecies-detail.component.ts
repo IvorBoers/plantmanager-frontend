@@ -17,6 +17,7 @@ export class PlantSpeciesDetailComponent extends AbstractDetailComponent<PlantSp
   all!: PlantSpecies[];
   allTypes!: PlantSpeciesType[];
   newGrowPeriod?: GrowPeriod;
+  selectedGrowPeriod?: GrowPeriod;
   growPhases = ['SOWING_INDOOR',
     'SOWING_UNDER_GLASS',
     'SOWING_OUTSIDE',
@@ -61,14 +62,42 @@ export class PlantSpeciesDetailComponent extends AbstractDetailComponent<PlantSp
   }
 
   saveGrowPeriod() {
-    if (this.newGrowPeriod instanceof GrowPeriod) {
-      this.item.growPeriods.push(this.newGrowPeriod);
+    if (this.newGrowPeriod && this.newGrowPeriod.id == undefined) {
+        this.item.growPeriods.push(this.newGrowPeriod);
     }
     this.newGrowPeriod = undefined;
     this.save();
   }
 
   startNewGrowPeriod() {
-    this.newGrowPeriod = new GrowPeriod();
+    this.selectedGrowPeriod = undefined;
+    if (this.newGrowPeriod && this.newGrowPeriod.id == undefined) {
+      this.newGrowPeriod = undefined;
+    } else {
+      this.newGrowPeriod = new GrowPeriod();
+    }
+  }
+
+  deleteGrowPeriod() {
+    if (this.selectedGrowPeriod) {
+      let number = this.item.growPeriods.indexOf(this.selectedGrowPeriod);
+      this.item.growPeriods.splice(number, 1);
+      this.save();
+    }
+  }
+
+  editGrowPeriod() {
+    if (this.selectedGrowPeriod) {
+      this.newGrowPeriod = this.selectedGrowPeriod;
+    }
+  }
+
+  setSelectedGrowPeriod(row: GrowPeriod) {
+    if (this.selectedGrowPeriod == row) {
+      this.selectedGrowPeriod = undefined;
+    } else {
+      this.selectedGrowPeriod = row;
+    }
   }
 }
+
