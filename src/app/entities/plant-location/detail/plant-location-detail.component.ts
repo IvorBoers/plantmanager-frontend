@@ -21,7 +21,7 @@ export class PlantLocationDetailComponent extends AbstractDetailComponent<PlantL
     super(router, route, _snackBar, service)
   }
 
-  setItem(one: PlantLocation) {
+  override setItem(one: PlantLocation) {
     const temp = this.hexToRgb(one.color);
     if (temp && this.colorCtr) {
       this.colorCtr.setValue(new Color(temp.r, temp.g, temp.b));
@@ -29,7 +29,7 @@ export class PlantLocationDetailComponent extends AbstractDetailComponent<PlantL
     super.setItem(one);
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
     this.service.getAll().subscribe(result => this.all = result);
     this.colorCtr.valueChanges.subscribe(value => {

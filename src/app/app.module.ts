@@ -23,31 +23,37 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatSelectModule} from "@angular/material/select";
 import {HttpClientModule} from "@angular/common/http";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatMomentDateModule, MomentDateAdapter} from "@angular/material-moment-adapter";
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {MAT_DATE_FORMATS} from "@angular/material/core";
 import {SeedPackageDetailComponent} from "./entities/seed-package/detail/seed-package-detail.component";
 import {SeedPackageListComponent} from "./entities/seed-package/list/seed-package-list.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {PlantsDetailComponent} from "./entities/plants/detail/plants-detail.component";
 import {PlantsListComponent} from "./entities/plants/list/plants-list.component";
-import {ProducePickEventDetailComponent} from './entities/produce-pick-event/detail/produce-pick-event-detail.component';
+import {
+  ProducePickEventDetailComponent
+} from './entities/produce-pick-event/detail/produce-pick-event-detail.component';
 import {ProducePickEventListComponent} from './entities/produce-pick-event/list/produce-pick-event-list.component';
 import {PlantLocationDetailComponent} from "./entities/plant-location/detail/plant-location-detail.component";
 import {PlantLocationListComponent} from "./entities/plant-location/list/plant-location-list.component";
-import {MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS, NgxMatColorPickerModule} from '@angular-material-components/color-picker';
+import {
+  MAT_COLOR_FORMATS,
+  NGX_MAT_COLOR_FORMATS,
+  NgxMatColorPickerModule
+} from '@angular-material-components/color-picker';
 import {PlantSpeciesTypeDetailComponent} from "./entities/plantspecies-type/detail/plantspecies-type-detail.component";
 import {PlantSpeciesTypeListComponent} from "./entities/plantspecies-type/list/plantspecies-type-list.component";
-import { HomeComponent } from './home/home.component';
-import { SeedPackageBlockComponent } from './seed-package-block/seed-package-block.component';
-import { PlantBlockComponent } from './plant-block/plant-block.component';
+import {HomeComponent} from './home/home.component';
+import {SeedPackageBlockComponent} from './seed-package-block/seed-package-block.component';
+import {PlantBlockComponent} from './plant-block/plant-block.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSliderModule} from "@angular/material/slider";
-import { ImageviewComponent } from './imageview/imageview.component';
+import {ImageviewComponent} from './imageview/imageview.component';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 export const MY_FORMATS = {
   parse: {
-    dateInput:  ['YYYY-MM-DD']
+    dateInput: ['YYYY-MM-DD']
   },
   display: {
     dateInput: 'YYYY-MM-DD',
@@ -101,17 +107,17 @@ export const MY_FORMATS = {
     MatSortModule,
     MatDialogModule,
     MatSelectModule,
-    MatMomentDateModule,
     MatDatepickerModule,
     MatCheckboxModule,
-    NgxMatColorPickerModule
+    NgxMatColorPickerModule,
+    MatGridListModule
   ],
   providers: [
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
-    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
+    {provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS}
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

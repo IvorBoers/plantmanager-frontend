@@ -33,7 +33,7 @@
           <div class="pm-formfield-inline-row">
             <mat-form-field appearance="fill" *ngIf="item.currentLocation">
               <mat-label>Plant location</mat-label>
-              <input matInput disabled [value]="item.currentLocation?.name">
+              <input matInput disabled [value]="item.currentLocation.name">
             </mat-form-field>
 
             <button class="action" mat-stroked-button (click)="startNewRelocationEvent()">relocate</button>

@@ -32,13 +32,13 @@ export class PlantSpeciesDetailComponent extends AbstractDetailComponent<PlantSp
     super(router, route, _snackBar, service)
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
     this.service.getAll().subscribe(result => this.all = result);
     this.typeService.getAll().subscribe(result => this.allTypes = result);
   }
 
-  save(redirectToOverview?: boolean) {
+  override save(redirectToOverview?: boolean) {
     if (this.item.parentId) {
       // set type of parent on this item
       let parentSpecies = this.all.find(it => it.id == this.item.parentId);

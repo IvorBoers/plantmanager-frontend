@@ -45,16 +45,15 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
     super(router, route, _snackBar, service)
   }
 
-  ngOnInit() {
-
-    forkJoin({
-      seedpackages: this.seedPackageService.getAll(),
-      species: this.plantSpeciesService.getAll(),
-      locations: this.plantLocationService.getAll()}
-    ).subscribe(array => {
-      this.allPlantLocations = array['locations']
-      this.allPlantSpecies = array['species']
-      this.allSeedPackages = array['seedpackages']
+  override ngOnInit() {
+    forkJoin([
+      this.seedPackageService.getAll(),
+      this.plantSpeciesService.getAll(),
+      this.plantLocationService.getAll()]
+    ).subscribe(([sp, ps, pl]) => {
+      this.allPlantLocations = pl;
+      this.allPlantSpecies = ps;
+      this.allSeedPackages = sp;
       super.ngOnInit();
     });
 
@@ -85,7 +84,7 @@ export class PlantsDetailComponent extends AbstractDetailComponent<Plant> {
     return plant;
   }
 
-  setItem(one: Plant) {
+  override setItem(one: Plant) {
     if (one.buyEvent) this.hasBuyEvent = true;
     if (one.seedStartEvent) this.hasSeedStartEvent = true;
     this.hasPlantDiedEvent = one.diedEvent != null;

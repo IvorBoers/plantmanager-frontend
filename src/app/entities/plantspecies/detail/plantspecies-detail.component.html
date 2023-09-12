@@ -123,7 +123,7 @@
           </mat-form-field>
           <button mat-button (click)="saveGrowPeriod()">Save</button>
         </mat-card>
-        <table class="pm-growperiods-table" *ngIf="item.growPeriods?.length gt 0">
+        <table class="pm-growperiods-table" *ngIf="item.growPeriods && item.growPeriods.length > 0">
           <thead role="rowgroup">
           <tr class="pm-growperiods-row pm-growperiods-header-row">
             <th class="pm-growperiods-header-cell">Month</th>

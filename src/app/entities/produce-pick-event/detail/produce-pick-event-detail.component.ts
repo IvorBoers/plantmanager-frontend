@@ -20,7 +20,7 @@ export class ProducePickEventDetailComponent extends AbstractDetailComponent<Pro
     super(router, route, _snackBar, service)
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     this.plantService.getAll().subscribe(all => {
       this.allPlants = all;
       super.ngOnInit();

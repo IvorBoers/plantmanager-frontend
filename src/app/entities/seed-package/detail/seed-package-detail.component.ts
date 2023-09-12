@@ -8,7 +8,6 @@ import {PlantSpeciesService} from "../../plantspecies/plant-species-service";
 import {PlantSpecies} from "../../../domain/plant-species";
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {BuyEvent} from "../../../domain/buy-event";
-import {ImagesService} from "../../../shared/images-service";
 
 @Component({
   selector: 'app-seed-package-detail',
@@ -24,12 +23,12 @@ export class SeedPackageDetailComponent extends AbstractDetailComponent<SeedPack
     super(router, route, _snackBar, service)
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
     this.plantSpeciesService.getAll().subscribe(result => this.allPlantSpecies = result);
   }
 
-  setItem(one: SeedPackage) {
+  override setItem(one: SeedPackage) {
     super.setItem(one);
     this.hasBuyEvent = one.buyEvent != null;
   }
@@ -46,7 +45,7 @@ export class SeedPackageDetailComponent extends AbstractDetailComponent<SeedPack
     return "entities/seedpackages";
   }
 
-  compareById(obj1: any, obj2: any): boolean {
+  override compareById(obj1: any, obj2: any): boolean {
     if (typeof obj2 === 'object') {
       return obj1 && obj2 && obj1.id === obj2.id;
     }

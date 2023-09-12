@@ -17,7 +17,7 @@ export class PlantSpeciesTypeDetailComponent extends AbstractDetailComponent<Pla
     super(router, route, _snackBar, service)
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
     this.service.getAll().subscribe(result => this.all = result);
   }

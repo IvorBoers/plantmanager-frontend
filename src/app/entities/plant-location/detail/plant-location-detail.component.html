@@ -19,7 +19,8 @@
           <mat-label>Name</mat-label>
           <input matInput [(ngModel)]="item.name">
         </mat-form-field>
-        <mat-form-field>
+
+        <mat-form-field appearance="fill">
           <input matInput [ngxMatColorPicker]="picker" [formControl]="colorCtr">
           <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
           <ngx-mat-color-picker #picker></ngx-mat-color-picker>
